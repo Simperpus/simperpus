@@ -121,6 +121,7 @@ class ReversionController extends Controller
             'penalty' => $request->amount_penalty,
             'returned_at' => $request->returned_at,
         ]);
+        $day = date_diff(date_create(date('Y-m-d H:i:s',strtotime($loan->loan_at))),date_create(date('Y-m-d H:i:s',strtotime($loan->expired_at))));
         if ($reversion) {
             $loan->update([
                 "status" => "finished"
@@ -145,6 +146,8 @@ Detail Pengembalian :
 *Judul:* ".$dt->title."
 *Pengarang:* ".$dt->title."
 *Tanggal Pengembalian:* ".date('d-m-Y H:i',strtotime($reversion->returned_at))."
+*Tanggal Peminjaman:* ".date('d-m-Y H:i',strtotime($loan->loan_at))."
+*Lama Peminjaman:* ".$day->days." Hari
 *Denda:* ".number_format($reversion->penalty,0,',','.')."
 =========================
 Terimakasih!*";            
